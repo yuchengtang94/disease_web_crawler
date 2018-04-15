@@ -26,6 +26,8 @@ class AuthorSpider(scrapy.Spider):
         self.i = self.i + 1
         # print(response)
         def extract_with_css(query):
+            if len(response.css(query)) == 0:
+                return ""
             return response.css(query).extract_first().strip()
         def remove_html(query):
             reg = re.compile('<[^>]*>')
@@ -54,15 +56,15 @@ class AuthorSpider(scrapy.Spider):
         
         yield {
             'id' : self.i,
-            # 'name': extract_with_css('.js-guide-title::text'),
-            # 'introduction_rawData': extract_with_css('#introduction > div'),
-            # 'symptoms_rawData': extract_with_css('#symptoms > div'),
-            # 'causes_rawData': extract_with_css('#causes > div'),
-            # 'treatment_rawData': extract_with_css('#treatment > div'),
+            'name': extract_with_css('.js-guide-title::text'),
             'introduction': introduction,
             'symptoms': symptoms,
             'causes': causes,
             'treatment': treatment,
+            'introduction_rawData': extract_with_css('#introduction > div'),
+            'symptoms_rawData': extract_with_css('#symptoms > div'),
+            'causes_rawData': extract_with_css('#causes > div'),
+            'treatment_rawData': extract_with_css('#treatment > div'),
         }
     # def parse_info(self, response):
     #     def extract_with_css(query):
