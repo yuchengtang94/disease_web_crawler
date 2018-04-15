@@ -18,6 +18,6 @@ for file_str in files:
 
     # dict = json_data
         # print('***** '+ str(i) + ' *******')
-    json_file_result = open('final_' + file_str, 'w+')
-    json.dump(dict, json_file_result)
+    json_file_result = open('final_' + file_str, 'w+', encoding='utf-8')
+    json.dump(dict, json_file_result, indent=4, separators=(',', ': '))
     json_file_result.close()
