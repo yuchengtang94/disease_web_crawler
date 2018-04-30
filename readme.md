@@ -1,5 +1,7 @@
 # Scrapy crawler Collect Disease Infomation
 
+Author: Yucheng Tang
+
 This is a part of our elastic_search disease search engine project!
 
 After running the following command, you will get datas you need for search engine.
