@@ -32,8 +32,12 @@ class AuthorSpider(scrapy.Spider):
                 return ""
             return response.css(query).extract_first().strip()
         def remove_html(query):
-            reg = re.compile('<[^>]*>')
-            return reg.sub(' ' , query).strip()
+            reg_h4 = re.compile('<h4>(.*?)</h4>')
+            reg1 = re.compile('<[^>]*>')
+            s0 = reg_h4.sub(' ', query).strip();
+            s = reg1.sub(' ' , s0).strip()
+            s = s.replace("\t", "")
+            return s
         # yield response.follow('#causes', self.parse_info)
         # for href in response.css('.blockgrid-item + a::attr(href)'):
             # yield response.follow('#symptoms', self.parse_disease)
@@ -49,24 +53,28 @@ class AuthorSpider(scrapy.Spider):
         symptoms_rawData = extract_with_css('#symptoms')
         causes_rawData = extract_with_css('#causes')
         treatment_rawData = extract_with_css('#standard-therapies')
+
+        affected_populations_rawData = extract_with_css('#affected-populations')
+        diagnosis_rawData = extract_with_css('#diagnosis')
+
         introduction = remove_html(introduction_rawData)
         symptoms = remove_html(symptoms_rawData)
         causes = remove_html(causes_rawData)
         treatment = remove_html(treatment_rawData)
+        affected_populations = remove_html(affected_populations_rawData)
+        diagnosis = remove_html(diagnosis_rawData)
 
 
         
         yield {
-            'id' : self.i,
+            'disease_type' : "Rare Disease",
             'name': extract_with_css('body > div.white-wrapper.rdr-single-wrp > div.container.single-reports-container > div > div.col-lg-8.col-md-8.col-sm-8.col-xs-12.print-only > h3::text'),
             'introduction': introduction,
             'symptoms': symptoms,
             'causes': causes,
             'treatment': treatment,
-            'introduction_rawData': introduction_rawData,
-            'symptoms_rawData': symptoms_rawData,
-            'causes_rawData': causes_rawData,
-            'treatment_rawData': treatment_rawData,
+            'affected_populations': affected_populations,
+            'diagnosis': diagnosis,
         }
     # def parse_info(self, response):
     #     def extract_with_css(query):

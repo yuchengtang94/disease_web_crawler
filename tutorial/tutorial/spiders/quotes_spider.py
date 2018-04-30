@@ -47,24 +47,27 @@ class AuthorSpider(scrapy.Spider):
         symptoms_rawData = extract_with_css('#symptoms > div')
         causes_rawData = extract_with_css('#causes > div')
         treatment_rawData = extract_with_css('#treatment > div')
+        affected_populations_rawData = extract_with_css('#affected-populations > div')
+        diagnosis_rawData = extract_with_css('#diagnosis > div')
+
         introduction = remove_html(introduction_rawData)
         symptoms = remove_html(symptoms_rawData)
         causes = remove_html(causes_rawData)
         treatment = remove_html(treatment_rawData)
+        affected_populations = remove_html(affected_populations_rawData)
+        diagnosis = remove_html(diagnosis_rawData)
 
 
         
         yield {
-            'id' : self.i,
+            'disease_type' : "Common Disease",
             'name': extract_with_css('.js-guide-title::text'),
             'introduction': introduction,
             'symptoms': symptoms,
             'causes': causes,
             'treatment': treatment,
-            'introduction_rawData': extract_with_css('#introduction > div'),
-            'symptoms_rawData': extract_with_css('#symptoms > div'),
-            'causes_rawData': extract_with_css('#causes > div'),
-            'treatment_rawData': extract_with_css('#treatment > div'),
+            'affected_populations': affected_populations,
+            'diagnosis': diagnosis,
         }
     # def parse_info(self, response):
     #     def extract_with_css(query):
